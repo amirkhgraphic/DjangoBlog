@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-3 min-vh-100">
+        <h1 class="text-center">{{ post.title }}</h1>
+        <h5>Body</h5>
+        <h6 class="text-justify">{{ post.body }}</h6>
+        <br>
+        <div>
+            <p>author: {{ post.author }}
+                <br>
+                modified on: {{ post.last_modified }}
+                <br>
+                created on: {{ post.created_at }}</p>
+        </div>
+        <div id="comments" class="container">
+            <form method="POST" id="new-comment" class="input-group my-5" action="{% url 'posts:create-comment' %}">
+              {% csrf_token %}
+              <span class="input-group-text">Write you opinion on this post</span>
+              <textarea class="form-control" name="body" aria-label="With textarea"></textarea>
+              <input type="text" hidden name="pk" value="{{ post.id }}"/>
+              <button type="submit" class="btn btn-secondary">Comment</button>
+            </form>
+            {% for comment in post.comments.all %}
+            <div class="bg-info">
+                <p>{{ comment.user }} said:
+                <br>"{{ comment.body }}"
+                <br>on: {{ comment.created_at }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

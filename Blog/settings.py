@@ -100,6 +100,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
+LOGIN_URL = reverse_lazy('users:log-in')
 LOGIN_REDIRECT_URL = reverse_lazy('posts:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('users:log-in')
 

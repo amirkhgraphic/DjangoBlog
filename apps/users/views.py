@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic.edit import FormView, UpdateView
 from apps.users.forms import SignupForm, LoginForm, ProfileForm
 from django.contrib.auth import login, authenticate, get_user_model
@@ -43,6 +45,7 @@ class LoginView(FormView):
             return HttpResponseRedirect(reverse_lazy('users:log-in'))
 
 
+@method_decorator(login_required, name='dispatch')
 class ProfileUpdateView(UpdateView):
     model = get_user_model()
     form_class = ProfileForm
