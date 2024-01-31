@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mt-3">
+        <h1 class="text-center">Welcome to OurBlog
+            <span class="text-muted">"{{ form.instance.first_name }} {{ form.instance.last_name  }}"</span>
+        </h1>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-secondary">Save</button>
+        </form>
+    </div>
+{% endblock %}

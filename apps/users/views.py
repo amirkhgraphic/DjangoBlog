@@ -1,7 +1,7 @@
 from django.contrib import messages
-from django.views.generic.edit import FormView
-from apps.users.forms import SignupForm, LoginForm
-from django.contrib.auth import login, authenticate
+from django.views.generic.edit import FormView, UpdateView
+from apps.users.forms import SignupForm, LoginForm, ProfileForm
+from django.contrib.auth import login, authenticate, get_user_model
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
@@ -41,3 +41,16 @@ class LoginView(FormView):
             warning_message = f"user (with IP: {user_ip}) tried to log in with wrong credentials"
             messages.add_message(self.request, messages.WARNING, warning_message)
             return HttpResponseRedirect(reverse_lazy('users:log-in'))
+
+
+class ProfileUpdateView(UpdateView):
+    model = get_user_model()
+    form_class = ProfileForm
+    template_name = 'users/profile.html'
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        return super().form_valid(form)
