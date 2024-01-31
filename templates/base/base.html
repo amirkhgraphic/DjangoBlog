@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/base/base.css">
+    <link rel="stylesheet" href="/static/css/base/header.css">
+    <link rel="stylesheet" href="/static/css/base/footer.css">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    {% include 'base/header.html' %}
+    {% block content %}{% endblock %}
+    {% include 'base/footer.html' %}
+
+</body>
+{% block scripts %}{% endblock %}
+</html>

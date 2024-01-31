@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from pathlib import Path
 import local_settings
 
@@ -17,7 +18,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'rest_framework',
+
     'apps.users',
+    'apps.posts'
 ]
 
 MIDDLEWARE = [
@@ -84,4 +92,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Customization
 AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
+
+LOGIN_REDIRECT_URL = reverse_lazy('posts:home')
+LOGOUT_REDIRECT_URL = reverse_lazy('users:log-in')
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
