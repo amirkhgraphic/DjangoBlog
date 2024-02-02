@@ -7,9 +7,6 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import FormView, ListView, DetailView
 from apps.posts.forms import CreatePostForm
 from apps.posts.models import Category, Post, Comment
-from django.contrib.auth import get_user_model
-
-from apps.users.models import User
 
 
 @method_decorator(login_required, name='dispatch')
@@ -50,6 +47,11 @@ class DetailPost(DetailView):
     template_name = 'posts/detail.html'
     context_object_name = 'post'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
 
 @login_required()
 @require_http_methods(["POST"])
@@ -60,3 +62,19 @@ def comment(request):
         post = Post.objects.get(id=pk)
         Comment(post=post, user=request.user, body=body).save()
     return redirect(f'/posts/detail/{pk}')
+
+
+@method_decorator(login_required, name='dispatch')
+class CategoryListPosts(ListView):
+    model = Post
+    template_name = 'posts/category.html'
+    context_object_name = 'posts'
+    ordering = '-created_at'
+
+
+@method_decorator(login_required, name='dispatch')
+class AuthorListPosts(ListView):
+    model = Post
+    template_name = 'posts/author.html'
+    context_object_name = 'posts'
+    ordering = '-created_at'

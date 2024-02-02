@@ -2,17 +2,15 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}List Posts{% endblock %}
+{% block title %}List Posts by Category{% endblock %}
 
 {% block content %}
     <div class="container-fluid bg-secondary my-0 py-5 px-0 min-vh-100">
         <h1 class="text-center bg-white text-muted py-3 my-3">Welcome to OurBlog</h1>
 
         <div class="input-group my-5 px-5">
-          <input id="search-bar" type="text" class="form-control" placeholder="Search by title / body"
-                 name="title_body">
+          <input id="search-bar" type="text" class="form-control" placeholder="Search by Author (user_name)"/>
         </div>
-
         <div id="container">
         {% for post in posts %}
             <div class="card mx-5 mt-5">
@@ -32,5 +30,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'js/searchByTitleBody.js' %}"></script>
+    <script src="{% static 'js/searchByAuthor.js' %}"></script>
 {% endblock %}

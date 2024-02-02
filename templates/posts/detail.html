@@ -1,35 +1,73 @@
 {% extends 'base/base.html' %}
+{% load markdown_tags %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
     <div class="container mt-3 min-vh-100">
-        <h1 class="text-center">{{ post.title }}</h1>
-        <h5>Body</h5>
-        <h6 class="text-justify">{{ post.body }}</h6>
-        <br>
-        <div>
-            <p>author: {{ post.author }}
+        <div class="p-4 p-md-5 rounded bg-body-secondary">
+            <div class="px-0">
+                <h1 class="display-4">{{ post.title }}</h1>
+                <p class="small fst-italic mb-0">{{ post.created_at }} by
+                    <a class="text-decoration-none" href="{% url 'users:profile' %}">{{ post.author.user_name }}</a>
+                </p>
+                <div class="lead my-3">{{ post.body | markdown_convertor | safe }}</div>
                 <br>
-                modified on: {{ post.last_modified }}
-                <br>
-                created on: {{ post.created_at }}</p>
+                <p class="card card-body bg-dark text-white rounded m-0 py-2 px-3" style="width: fit-content;">{{ post.category.name }}</p>
+            </div>
         </div>
         <div id="comments" class="container">
-            <form method="POST" id="new-comment" class="input-group my-5" action="{% url 'posts:create-comment' %}">
-              {% csrf_token %}
-              <span class="input-group-text">Write you opinion on this post</span>
-              <textarea class="form-control" name="body" aria-label="With textarea"></textarea>
-              <input type="text" hidden name="pk" value="{{ post.id }}"/>
-              <button type="submit" class="btn btn-secondary">Comment</button>
-            </form>
-            {% for comment in post.comments.all %}
-            <div class="bg-info">
-                <p>{{ comment.user }} said:
-                <br>"{{ comment.body }}"
-                <br>on: {{ comment.created_at }}</p>
-            </div>
-            {% endfor %}
+            <section class="p-3 m-0 border-0 bd-example">
+                <div class="card bg-light">
+                    <header class="card-header border-0 bg-transparent">
+                        <p>
+                            <a class="text-decoration-none" href="{% url 'users:profile' %}">
+                                {{ post.author.first_name }} {{ post.author.last_name }}
+                            </a>
+                            share your thoughts on this post :)
+                        </p>
+                    </header>
+                    <div class="card-body py-1">
+                        <form method="POST" id="new-comment" action="{% url 'posts:create-comment' %}">
+                            {% csrf_token %}
+                            <input type="text" name="pk" value="{{ post.id }}" hidden/>
+                            <div>
+                                <label for="exampleFormControlTextarea1" class="visually-hidden">Comment</label>
+                                <textarea
+                                  class="form-control form-control-sm border border-2 rounded-1"
+                                  id="exampleFormControlTextarea1"
+                                  placeholder="Add a comment..."
+                                  minlength="3"
+                                  maxlength="255"
+                                  required
+                                  name="body"
+                                ></textarea>
+                            </div>
+                        <footer class="card-footer bg-transparent border-0 text-end">
+                            <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+                        </footer>
+                        </form>
+                    </div>
+                </div>
+
+                <aside class="d-flex justify-content-between align-items-center my-4">
+                    <h4 class="h6">{{ post.comments.all | length }} Comments</h4>
+                </aside>
+
+                {% for comment in post.comments.all|dictsortreversed:"created_at" %}
+                <article class="card bg-light my-3">
+                    <header class="card-header border-0 bg-transparent d-flex align-items-center">
+                        <div><a class="fw-semibold text-decoration-none">{{ comment.user }}</a></div>
+                    </header>
+                    <div class="card-body py-2 px-3">{{ comment.body | markdown_convertor | safe }}</div>
+                    <footer class="border-0 py-1 px-3">
+                        <span class="small text-muted">{{ comment.created_at }}</span>
+                    </footer>
+                </article>
+                {% empty %}
+                <p>Be the first one to comment your opinion about this post!</p>
+                {% endfor %}
+            </section>
         </div>
     </div>
 {% endblock %}
