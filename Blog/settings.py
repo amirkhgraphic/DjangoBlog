@@ -104,7 +104,7 @@ REST_FRAMEWORK = {
 }
 
 LOGIN_URL = reverse_lazy('users:log-in')
-LOGIN_REDIRECT_URL = reverse_lazy('posts:home')
+LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGOUT_REDIRECT_URL = reverse_lazy('users:log-in')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'

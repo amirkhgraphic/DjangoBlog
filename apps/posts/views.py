@@ -13,7 +13,7 @@ from apps.posts.models import Category, Post, Comment
 class CreatePost(FormView):
     form_class = CreatePostForm
     template_name = 'posts/create.html'
-    success_url = reverse_lazy('posts:home')
+    success_url = reverse_lazy('home')
     extra_context = {
         'title_of_template': 'Create Post',
     }

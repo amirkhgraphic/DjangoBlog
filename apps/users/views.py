@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 class SignupView(FormView):
     form_class = SignupForm
     template_name = 'users/signup.html'
-    success_url = reverse_lazy('posts:home')
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -27,7 +27,7 @@ class SignupView(FormView):
 class LoginView(FormView):
     form_class = LoginForm
     template_name = 'users/login.html'
-    success_url = reverse_lazy('posts:home')
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         credentials = form.cleaned_data
